@@ -1,4 +1,4 @@
-# LaMetric Local 1.0.0
+# LaMetric Local 1.0.1
 
 An asynchronous client library for the [API of LaMetric Time](http://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html) devices in local network. 
 
@@ -26,7 +26,7 @@ const LaMetricLocal = require('lametric-local');
 
 const client = new LaMetricLocal({
   base_url: 'http://<internal ip>:8080',
-  basic_authorization: '<basi authorization>'
+  basic_authorization: '<basic authorization>'
 });
 ```
 
@@ -43,7 +43,7 @@ client.put(path, params);
 client.delete(path, params);
 ```
 
-You simply need to pass the endpoint and parameters to one of convenience methods.  Take a look at the [documentation site](http://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-endpoints.html) to reference available endpoints.
+You simply need to pass the endpoint and parameters to one of convenience methods. Take a look at the [documentation site](http://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-endpoints.html) to reference available endpoints.
 
 ```javascript
 client.get('device');
