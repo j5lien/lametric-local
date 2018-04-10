@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const nock = require('nock');
-const LaMetricLocal = require('../lib/lametric');
+const LaMetricLocal = require('../lib/lametric-local');
 const VERSION = require('../package.json').version;
 
 describe('LaMetricLocal', function() {
@@ -147,7 +147,7 @@ describe('LaMetricLocal', function() {
     describe('__request()', function(){
       before(function(){
         this.nock = nock('http://127.0.0.1:8080');
-        this.twitter = new LaMetricLocal({
+        this.client = new LaMetricLocal({
           base_url: 'http://127.0.0.1:8080',
         });
       });
@@ -155,7 +155,7 @@ describe('LaMetricLocal', function() {
       it('accepts any 2xx response', function(done) {
         var jsonResponse = {id: 1, name: 'lametric'};
         this.nock.get(/.*/).reply(201, jsonResponse);
-        this.twitter.__request('get', '/device')
+        this.client.__request('get', '/device')
           .then(data => {
             assert.deepEqual(data, jsonResponse);
             done();
@@ -165,7 +165,7 @@ describe('LaMetricLocal', function() {
       it('errors when there is an error object', function(done){
         var jsonResponse = {errors: ['nope']};
         this.nock.get(/.*/).reply(203, jsonResponse);
-        this.twitter.__request('get', '/device')
+        this.client.__request('get', '/device')
           .catch(error => {
             assert.deepEqual(error, ['nope']);
             done();
@@ -174,7 +174,7 @@ describe('LaMetricLocal', function() {
 
       it('errors on bad json', function(done) {
         this.nock.get(/.*/).reply(200, 'fail whale');
-        this.twitter.__request('get', '/device')
+        this.client.__request('get', '/device')
           .catch(error => {
             assert(error instanceof Error);
             done();
@@ -183,7 +183,7 @@ describe('LaMetricLocal', function() {
 
       it('allows an empty response', function(done){
         this.nock.get(/.*/).reply(201, '');
-        this.twitter.__request('get', '/device')
+        this.client.__request('get', '/device')
           .then(data => {
             assert.deepEqual(data, {});
             done();
@@ -192,7 +192,7 @@ describe('LaMetricLocal', function() {
 
       it('errors when there is a bad http status code', function(done) {
         this.nock.get(/.*/).reply(500, '{}');
-        this.twitter.__request('get', '/device')
+        this.client.__request('get', '/device')
           .catch(error => {
             assert(error instanceof Error);
             done();
@@ -201,7 +201,7 @@ describe('LaMetricLocal', function() {
 
       it('errors on a request or network error', function(done) {
         this.nock.get(/.*/).replyWithError('something bad happened');
-        this.twitter.__request('get', '/device')
+        this.client.__request('get', '/device')
           .catch(error => {
             assert(error instanceof Error);
             done();
