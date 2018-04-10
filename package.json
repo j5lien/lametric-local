@@ -1,6 +1,6 @@
 {
   "name": "lametric-local",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An asynchronous client library for the API of LaMetric Time devices in local network.",
   "keywords": [
     "lametric"
